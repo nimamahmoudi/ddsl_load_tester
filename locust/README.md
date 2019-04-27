@@ -1,6 +1,8 @@
 # Some References
 
 - [How do I Locust](https://github.com/pglass/how-do-i-locust)
+- [Locust Web API Code](https://github.com/locustio/locust/blob/master/locust/web.py)
+- [Locust Github](https://github.com/locustio/locust)
 
 # Initialization
 
