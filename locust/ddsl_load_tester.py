@@ -117,6 +117,26 @@ class DdslLoadTester:
     def change_count(self, new_count):
         return set_target_user_count(new_count, self.hatch_rate, self.base)
     
+    def get_all_stats(self):
+        temp_stats = self.get_temp_stats()
+        
+        return {
+            'time': get_stats_arr(temp_stats, 'time'),
+            'current_response_time_percentile_50': get_stats_arr(temp_stats, 'current_response_time_percentile_50'),
+            'current_response_time_percentile_95': get_stats_arr(temp_stats, 'current_response_time_percentile_95'),
+            'fail_ratio': get_stats_arr(temp_stats, 'fail_ratio'),
+            'total_rps': get_stats_arr(temp_stats, 'total_rps'),
+            'user_count': get_stats_arr(temp_stats, 'user_count'),
+            'avg_response_time': get_stats_arr_stats(temp_stats, 'avg_response_time'),
+            'current_rps': get_stats_arr_stats(temp_stats, 'current_rps'),
+            'max_response_time': get_stats_arr_stats(temp_stats, 'max_response_time'),
+            'median_response_time': get_stats_arr_stats(temp_stats, 'median_response_time'),
+            'min_response_time': get_stats_arr_stats(temp_stats, 'min_response_time'),
+            'num_failures': get_stats_arr_stats(temp_stats, 'num_failures'),
+            'num_requests': get_stats_arr_stats(temp_stats, 'num_requests'),
+        }
+        
+    
     def stop_test(self):
         self.stop_capturing()
         return stop_test(self.base)
