@@ -69,19 +69,29 @@ class WorkerThread(threading.Thread):
         
     def run(self):
         while not self.stop_signal:
+            sleep_time = self.sleep_time
             self.loop_timer.tic()
             try:
                 stats = self.parent.get_stats()
                 # self.parent.reset_remote_stats()
                 if stats['state'] == 'running':
-                    stats['time'] = time.time()
-                    self.parent.temp_stats.append(stats)
-                    if len(self.parent.temp_stats) > self.parent.temp_stat_max_len:
-                        del self.parent.temp_stats[0]
+                    if stats['stats'][0]['num_requests'] > 0:
+                        stats['time'] = time.time()
+                        self.parent.temp_stats.append(stats)
+                        if len(self.parent.temp_stats) > self.parent.temp_stat_max_len:
+                            del self.parent.temp_stats[0]
+                    else:
+                        sleep_time = 0.2
+                else:
+                    sleep_time = 0.2
             except Exception as e:
                 print('Got Exception: ' + str(e))
             elapsed = self.loop_timer.toc()
-            time.sleep(self.sleep_time - elapsed)
+            if sleep_time - elapsed > 0:
+                time.sleep(sleep_time - elapsed)
+
+
+from datetime import datetime
 
 class DdslLoadTester:
     def __init__(self, base='http://localhost:8089/',hatch_rate=50,temp_stat_max_len=5):
@@ -104,7 +114,7 @@ class DdslLoadTester:
         
     def reset_temp_stats(self):
         self.temp_stats = []
-        self.reset_remote_stats()
+#         self.reset_remote_stats()
         return True
     
     def get_temp_stats(self):
@@ -150,12 +160,28 @@ class DdslLoadTester:
         self.worker_thread = WorkerThread(self)
         self.worker_thread.start()
         
+    def prepare_results_from_df(self, results):
+        # make the elapsed columns
+        results['elapsed'] = (results['time'] - results['time'].min())
+        results['elapsed_min'] = results['elapsed']/60
+
+        # Save File
+        date = datetime.now()
+        filename = "results/" + date.strftime('%Y-%m-%d_%H-%M-%S.csv')
+        results.to_csv(filename, index=False)
+        return results, filename
+        
     def stop_capturing(self):
         if self.worker_thread is not None:
             self.worker_thread.stop_signal = True
             return True
         else:
             return True
+        
+    def get_plot_filename(self, res):
+        date = datetime.now()
+        filename = "results/" + date.strftime('%Y-%m-%d_%H-%M-%S.png')
+        return filename
         
 def get_stats_arr(stats, key):
     return [stats[i][key] for i in range(len(stats))]
