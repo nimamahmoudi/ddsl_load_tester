@@ -17,7 +17,7 @@ pip install locust
 This will use the `locustfile.py` or we can specify the file name using -f option.
 
 ```
-locust --host=http://wg2.nmahmoudi.ir:31112/function/pyfibo
+locust --host=THE_TEST_URL
 ```
 
 # Changing the number of users
