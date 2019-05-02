@@ -45,7 +45,7 @@ locust --host=http://THE_TEST_URL
 This will use the `locustfile.py` or we can specify the file name using -f option.
 
 You can look at the locust dashboard on `http://localhost:8089`. It
-will show love stats about the requests and should look like this:
+will show the stats about the requests and should look like this:
 
 ![Locust Dashboard](fig/locust_dashboard.png)
 
