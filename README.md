@@ -44,6 +44,11 @@ locust --host=http://THE_TEST_URL
 
 This will use the `locustfile.py` or we can specify the file name using -f option.
 
+You can look at the locust dashboard on `http://localhost:8089`. It
+will show love stats about the requests and should look like this:
+
+![Locust Dashboard](fig/locust_dashboard.png)
+
 # Usage
 
 In this section, we will mention how the library should be used. Keep in mind that this
@@ -99,6 +104,38 @@ For getting the original stats from the locust server (without change):
 
 ```python
 load_tester.get_current_stats(base='http://localhost:8089/')
+```
+
+Example output:
+
+```python
+{'current_response_time_percentile_50': None,
+ 'current_response_time_percentile_95': None,
+ 'errors': [],
+ 'fail_ratio': 0.0,
+ 'state': 'stopped',
+ 'stats': [{'avg_content_length': 4.0,
+   'avg_response_time': 390.2837256558634,
+   'current_rps': 8.9,
+   'max_response_time': 5086.153268814087,
+   'median_response_time': 220,
+   'method': 'GET',
+   'min_response_time': 22.908926010131836,
+   'name': '/function/pyfibo/',
+   'num_failures': 0,
+   'num_requests': 6230},
+  {'avg_content_length': 4.0,
+   'avg_response_time': 390.2837256558634,
+   'current_rps': 8.9,
+   'max_response_time': 5086.153268814087,
+   'median_response_time': 220,
+   'method': None,
+   'min_response_time': 22.908926010131836,
+   'name': 'Total',
+   'num_failures': 0,
+   'num_requests': 6230}],
+ 'total_rps': 8.9,
+ 'user_count': 0}
 ```
 
 ## Getting The Temp Stats
