@@ -1,1 +1,1 @@
-from ddsl_load_tester import *
+from .ddsl_load_tester import *

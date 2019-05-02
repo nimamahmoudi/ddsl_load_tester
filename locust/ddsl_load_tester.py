@@ -72,7 +72,7 @@ class WorkerThread(threading.Thread):
             self.loop_timer.tic()
             try:
                 stats = self.parent.get_stats()
-                self.parent.reset_remote_stats()
+                # self.parent.reset_remote_stats()
                 if stats['state'] == 'running':
                     stats['time'] = time.time()
                     self.parent.temp_stats.append(stats)
@@ -104,6 +104,7 @@ class DdslLoadTester:
         
     def reset_temp_stats(self):
         self.temp_stats = []
+        self.reset_remote_stats()
         return True
     
     def get_temp_stats(self):
