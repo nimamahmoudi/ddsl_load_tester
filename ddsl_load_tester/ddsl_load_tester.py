@@ -188,3 +188,8 @@ def get_stats_arr(stats, key):
 
 def get_stats_arr_stats(stats, key, index=0):
     return [stats[i]['stats'][index][key] for i in range(len(stats))]
+
+
+seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
+def get_loop_time_in_secs(s):
+    return int(s[:-1]) * seconds_per_unit[s[-1]]
