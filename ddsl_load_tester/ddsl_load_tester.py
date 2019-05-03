@@ -74,6 +74,12 @@ class WorkerThread(threading.Thread):
             try:
                 stats = self.parent.get_stats()
                 # self.parent.reset_remote_stats()
+                
+                stats2 = self.parent.custom_sensing()
+                if stats2 is not None:
+                    for key in stats2:
+                        stats["custom_" + str(key)] = stats2[key]
+                
                 if stats['state'] == 'running':
                     if stats['stats'][0]['num_requests'] > 0:
                         stats['time'] = time.time()
@@ -109,6 +115,9 @@ class DdslLoadTester:
     def get_stats(self):
         return get_current_stats(self.base)
     
+    def custom_sensing(self):
+        return None 
+    
     def reset_remote_stats(self):
         return reset_stats(self.base)
         
@@ -130,8 +139,8 @@ class DdslLoadTester:
     
     def get_all_stats(self):
         temp_stats = self.get_temp_stats()
-        
-        return {
+                
+        return_val = {
             'time': get_stats_arr(temp_stats, 'time'),
             'current_response_time_percentile_50': get_stats_arr(temp_stats, 'current_response_time_percentile_50'),
             'current_response_time_percentile_95': get_stats_arr(temp_stats, 'current_response_time_percentile_95'),
@@ -146,6 +155,13 @@ class DdslLoadTester:
             'num_failures': get_stats_arr_stats(temp_stats, 'num_failures'),
             'num_requests': get_stats_arr_stats(temp_stats, 'num_requests'),
         }
+        
+        stats2 = self.custom_sensing()
+        if stats2 is not None:
+            for key in stats2:
+                return_val["custom_" + str(key)] = get_stats_arr(temp_stats, "custom_" + str(key))
+                        
+        return return_val
         
     
     def stop_test(self):

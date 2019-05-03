@@ -286,3 +286,15 @@ plt.show()
 The resulting figure looks like this:
 
 ![Example Results](fig/example_result.png)
+
+## Adding Custom Sensing Function
+
+In case you need to sense something other than what is already being measured (like the replication factor) just like other measurements, you can add a `custom_sensing()` function and return a dictionary of the variables that you are trying to sense. Here is an example:
+
+```python
+def custom_sensing():
+    import random
+    return {'random':random.random()}
+
+lt.custom_sensing = custom_sensing
+```
