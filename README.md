@@ -52,7 +52,7 @@ will show the stats about the requests and should look like this:
 # Usage
 
 In this section, we will mention how the library should be used. Keep in mind that this
-library assumes a running instance of locust (read `starting locust server` section).
+library assumes a running instance of locust (read [`starting locust server` section](#starting-locust-server)).
 
 ## Adding to PYTHONPATH
 
@@ -224,6 +224,8 @@ for i in tqdm(range(len(user_sequence))):
     
     result = lt.get_all_stats()
     df_result = pd.DataFrame(data=result)
+    
+    # ANY CONTROL ACTIONS GO HERE
     
     if results is None:
         results = df_result
