@@ -298,3 +298,5 @@ def custom_sensing():
 
 lt.custom_sensing = custom_sensing
 ```
+
+See the example file for a full implementation.
