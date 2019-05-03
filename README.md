@@ -43,7 +43,7 @@ locust --host=http://THE_TEST_URL
 ```
 
 This will use the `locustfile.py` or we can specify the file name using -f option.
-
+* Note that one should use two terminals to specify the "THE_TEST_URL" and running the "locustfile.py".
 You can look at the locust dashboard on `http://localhost:8089`. It
 will show the stats about the requests and should look like this:
 
