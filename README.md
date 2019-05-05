@@ -225,7 +225,7 @@ for i in tqdm(range(len(user_sequence))):
     result = lt.get_all_stats()
     df_result = pd.DataFrame(data=result)
     
-    # ANY CONTROL ACTIONS GO HERE
+    # ANY CONTROL ACTION GOES HERE
     
     if results is None:
         results = df_result
