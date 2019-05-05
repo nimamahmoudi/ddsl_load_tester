@@ -299,4 +299,4 @@ def custom_sensing():
 lt.custom_sensing = custom_sensing
 ```
 
-See the example file for a full implementation.
+These values will appear in the measurements with a prefix of `custom_`. See the example file for a full implementation.
