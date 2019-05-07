@@ -1,0 +1,184 @@
+#%% Change working directory from the workspace root to the ipynb file location. Turn this addition off with the DataScience.changeDirOnImportExport setting
+import os
+try:
+	os.chdir(os.path.join(os.getcwd(), 'examples'))
+	print(os.getcwd())
+except:
+	pass
+
+#%%
+get_ipython().run_line_magic('load_ext', 'autoreload')
+
+# Auto reloading causes the kernel to reload the libraries we have
+get_ipython().run_line_magic('autoreload', '2')
+
+import time
+import pandas as pd
+
+import sys
+sys.path.append("../ddsl_load_tester")
+
+import ddsl_load_tester as load_tester
+
+#%% [markdown]
+# # Getting Current Status
+
+#%%
+load_tester.get_current_stats()
+
+#%% [markdown]
+# # Running a Sequence
+
+#%%
+from tqdm.auto import tqdm
+tqdm.pandas()
+
+loop_timer = load_tester.TimerClass()
+total_timer = load_tester.TimerClass()
+
+user_sequence = [50,100,500,1000,1000,1000,500,100,50]
+lt = load_tester.DdslLoadTester(hatch_rate=1000, temp_stat_max_len=5, base='http://localhost:8089/')
+lt.change_count(user_sequence[0])
+lt.start_capturing()
+
+loop_time_in_secs = load_tester.get_loop_time_in_secs('10s')
+
+loop_timer.tic()
+total_timer.tic()
+
+results = None
+for i in tqdm(range(len(user_sequence))):
+    user_count = user_sequence[i]
+    lt.change_count(user_count)
+    
+    time.sleep(loop_time_in_secs - loop_timer.toc())
+    
+    loop_timer.tic()
+    
+    result = lt.get_all_stats()
+    df_result = pd.DataFrame(data=result)
+    
+    if results is None:
+        results = df_result
+    else:
+        results = results.append(df_result)
+    
+lt.stop_test()
+
+results, filename = lt.prepare_results_from_df(results)
+
+results.head()
+
+#%% [markdown]
+# # Showing Stats For Each Loop
+
+#%%
+result
+
+#%% [markdown]
+# # Plotting The Sequence Results
+
+#%%
+res = results
+
+import matplotlib.pyplot as plt
+
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+plt.figure(figsize=(8,18))
+plt.subplot(411)
+plt.plot(res['elapsed_min'], res['min_response_time'], label='min_response_time')
+plt.plot(res['elapsed_min'], res['current_response_time_percentile_50'], label='median_response_time')
+plt.plot(res['elapsed_min'], res['avg_response_time'], label='avg_response_time')
+plt.plot(res['elapsed_min'], res['current_response_time_percentile_95'], label='95th percentile')
+plt.plot(res['elapsed_min'], res['max_response_time'], label='max_response_time')
+
+plt.xlabel('Time (minutes)')
+plt.ylabel('Average Response Time (ms)')
+plt.legend()
+
+plt.subplot(412)
+plt.plot(res['elapsed_min'], res['user_count'])
+plt.xlabel('Time (minutes)')
+plt.ylabel('Num of Users')
+
+plt.subplot(413)
+plt.plot(res['elapsed_min'], res['total_rps'])
+plt.xlabel('Time (minutes)')
+plt.ylabel('Throughput (req/s)')
+
+plt.subplot(414)
+plt.plot(res['elapsed_min'], res['fail_ratio'])
+plt.xlabel('Time (minutes)')
+plt.ylabel('Fail Ratio')
+
+filename = filename.replace('.csv', '')
+plt.savefig(filename + '.png', dpi=300)
+plt.savefig(filename + '.pdf')
+plt.show()
+
+#%% [markdown]
+# # Testing with Custom Sensing Function
+# 
+# In case you need another sensing functionality (for example you also want to measure the replica count or network latency) along with other information, you can override the `custom_sensing()` function in the object.
+
+#%%
+def custom_sensing():
+    import random
+    return {'random':random.random()}
+
+lt.custom_sensing = custom_sensing
+# Testing the function
+lt.custom_sensing()
+
+
+#%%
+from tqdm.auto import tqdm
+tqdm.pandas()
+
+loop_timer = load_tester.TimerClass()
+total_timer = load_tester.TimerClass()
+
+user_sequence = [50,100,500,1000,1000,1000,500,100,50]
+lt = load_tester.DdslLoadTester(hatch_rate=1000, temp_stat_max_len=5, base='http://localhost:8089/')
+lt.custom_sensing = custom_sensing
+lt.change_count(user_sequence[0])
+lt.start_capturing()
+
+loop_time_in_secs = load_tester.get_loop_time_in_secs('10s')
+
+loop_timer.tic()
+total_timer.tic()
+
+results = None
+for i in tqdm(range(len(user_sequence))):
+    user_count = user_sequence[i]
+    lt.change_count(user_count)
+    
+    time.sleep(loop_time_in_secs - loop_timer.toc())
+    
+    loop_timer.tic()
+    
+    result = lt.get_all_stats()
+    df_result = pd.DataFrame(data=result)
+        
+    if results is None:
+        results = df_result
+    else:
+        results = results.append(df_result)
+    
+lt.stop_test()
+
+results, filename = lt.prepare_results_from_df(results)
+
+results.head()
+
+
+#%%
+res = results
+
+plt.plot(res['elapsed_min'], res['custom_random'])
+plt.xlabel('Time (minutes)')
+plt.ylabel('Custom Value')
+
+
