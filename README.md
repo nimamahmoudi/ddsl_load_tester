@@ -43,7 +43,7 @@ locust --host=http://THE_TEST_URL
 ```
 
 This will use the `locustfile.py` or we can specify the file name using -f option.
-
+* Note that one should use two terminals to specify the "THE_TEST_URL" and running the "locustfile.py".  
 You can look at the locust dashboard on `http://localhost:8089`. It
 will show the stats about the requests and should look like this:
 
@@ -225,7 +225,7 @@ for i in tqdm(range(len(user_sequence))):
     result = lt.get_all_stats()
     df_result = pd.DataFrame(data=result)
     
-    # ANY CONTROL ACTIONS GO HERE
+    # ANY CONTROL ACTION GOES HERE
     
     if results is None:
         results = df_result
@@ -299,4 +299,4 @@ def custom_sensing():
 lt.custom_sensing = custom_sensing
 ```
 
-See the example file for a full implementation.
+These values will appear in the measurements with a prefix of `custom_`. See the example file for a full implementation.
