@@ -22,7 +22,7 @@ a `locustfile.py`:
 pip install -r requirements.txt
 ```
 
-FOr running examples:
+For running examples:
 
 ```bash
 pip install -r examples/requirements.txt
