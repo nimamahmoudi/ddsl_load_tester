@@ -1,15 +1,23 @@
 # Some References
 
+- [DDSL Locust](https://github.com/nimamahmoudi/ddsl_locust)
 - [How do I Locust](https://github.com/pglass/how-do-i-locust)
 - [Locust Web API Code](https://github.com/locustio/locust/blob/master/locust/web.py)
 - [Locust Github](https://github.com/locustio/locust)
 
 # Initialization
 
-Install the locust library:
-
+Uninstall locust library:
+```bash
+pip uninstall locust locustio
+# Check successful uninstall
+pip freeze | grep locust
 ```
-pip install locust
+
+Install the DDSL locust library:
+
+```bash
+pip install ddsl-locustio
 ```
 
 # Starting the server
@@ -17,7 +25,7 @@ pip install locust
 This will use the `locustfile.py` or we can specify the file name using -f option.
 
 ```
-locust --host=THE_TEST_URL
+ddsl_locust --host=THE_TEST_URL -f locustfile.py
 ```
 
 # Changing the number of users
@@ -45,38 +53,42 @@ to `localhost:8089/stats/requests`. The result is of the following format:
 
 ```
 {
-    "current_response_time_percentile_50": 570,
-    "current_response_time_percentile_95": 1300,
+    "current_max_response_time": 760,
+    "current_min_response_time": 420,
+    "current_response_time_average": 438,
+    "current_response_time_percentile_50": 450,
+    "current_response_time_percentile_95": 760,
     "errors": [],
     "fail_ratio": 0,
     "state": "running",
     "stats": [
         {
-            "avg_content_length": 4,
-            "avg_response_time": 407.4528589435168,
-            "current_rps": 131.2,
-            "max_response_time": 10368.172645568848,
-            "median_response_time": 350,
+            "avg_content_length": 100.2,
+            "avg_response_time": 522.722864151001,
+            "current_rps": 0.5,
+            "max_response_time": 762.3703479766846,
+            "median_response_time": 450,
             "method": "GET",
-            "min_response_time": 24.10292625427246,
-            "name": "/function/pyfibo/",
+            "min_response_time": 421.9634532928467,
+            "name": "/",
             "num_failures": 0,
-            "num_requests": 50212
+            "num_requests": 5
         },
         {
-            "avg_content_length": 4,
-            "avg_response_time": 407.4528589435168,
-            "current_rps": 131.2,
-            "max_response_time": 10368.172645568848,
-            "median_response_time": 350,
+            "avg_content_length": 100.2,
+            "avg_response_time": 522.722864151001,
+            "current_rps": 0.5,
+            "max_response_time": 762.3703479766846,
+            "median_response_time": 450,
             "method": null,
-            "min_response_time": 24.10292625427246,
+            "min_response_time": 421.9634532928467,
             "name": "Total",
             "num_failures": 0,
-            "num_requests": 50212
+            "num_requests": 5
         }
     ],
-    "total_rps": 131.2,
-    "user_count": 1000
+    "total_average_response_time": 522.722864151001,
+    "total_rps": 0.5,
+    "user_count": 1
 }
 ```
