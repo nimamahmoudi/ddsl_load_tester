@@ -18,6 +18,14 @@ a `locustfile.py`:
 
 # Installation
 
+Uninstall locust library:
+```bash
+pip uninstall locust locustio
+# Check successful uninstall
+pip freeze | grep locust
+```
+
+Install the DDSL locust library:
 ```bash
 pip install -r requirements.txt
 ```
@@ -33,13 +41,13 @@ pip install -r examples/requirements.txt
 To run the example, change your directory to the `examples/` directory and run the following 
 command.
 
-# Starting Locust Server
+# Starting DDSL Locust Server
 
 As mentioned before, the locust library is responsible to make the requests to the target url.
 To start the locust server, create a `locustfile.py` and run the following command:
 
 ```bash
-locust --host=http://THE_TEST_URL
+ddsl_locust --host=THE_TEST_URL -f locustfile.py
 ```
 
 This will use the `locustfile.py` or we can specify the file name using -f option.
@@ -53,6 +61,7 @@ will show the stats about the requests and should look like this:
 
 In this section, we will mention how the library should be used. Keep in mind that this
 library assumes a running instance of locust (read [`starting locust server` section](#starting-locust-server)).
+Just make sure to use the command `ddsl_locust` instead of `locust`.
 
 ## Adding to PYTHONPATH
 
@@ -109,33 +118,37 @@ load_tester.get_current_stats(base='http://localhost:8089/')
 Example output:
 
 ```python
-{'current_response_time_percentile_50': None,
- 'current_response_time_percentile_95': None,
+{'current_max_response_time': 790,
+ 'current_min_response_time': 360,
+ 'current_response_time_average': 395,
+ 'current_response_time_percentile_50': 480,
+ 'current_response_time_percentile_95': 790,
  'errors': [],
  'fail_ratio': 0.0,
- 'state': 'stopped',
- 'stats': [{'avg_content_length': 4.0,
-   'avg_response_time': 390.2837256558634,
-   'current_rps': 8.9,
-   'max_response_time': 5086.153268814087,
-   'median_response_time': 220,
+ 'state': 'running',
+ 'stats': [{'avg_content_length': 100.31967213114754,
+   'avg_response_time': 529.8116343920348,
+   'current_rps': 0.8,
+   'max_response_time': 793.5733795166016,
+   'median_response_time': 520,
    'method': 'GET',
-   'min_response_time': 22.908926010131836,
-   'name': '/function/pyfibo/',
+   'min_response_time': 305.24539947509766,
+   'name': '/',
    'num_failures': 0,
-   'num_requests': 6230},
-  {'avg_content_length': 4.0,
-   'avg_response_time': 390.2837256558634,
-   'current_rps': 8.9,
-   'max_response_time': 5086.153268814087,
-   'median_response_time': 220,
+   'num_requests': 244},
+  {'avg_content_length': 100.31967213114754,
+   'avg_response_time': 529.8116343920348,
+   'current_rps': 0.8,
+   'max_response_time': 793.5733795166016,
+   'median_response_time': 520,
    'method': None,
-   'min_response_time': 22.908926010131836,
+   'min_response_time': 305.24539947509766,
    'name': 'Total',
    'num_failures': 0,
-   'num_requests': 6230}],
- 'total_rps': 8.9,
- 'user_count': 0}
+   'num_requests': 244}],
+ 'total_average_response_time': 529.8116343920348,
+ 'total_rps': 0.8,
+ 'user_count': 1}
 ```
 
 ## Getting The Temp Stats
@@ -143,43 +156,42 @@ Example output:
 The result to `lt.get_all_stats()` is similar to this:
 
 ```python
-{'time': [1556833594.384781,
-  1556833596.38133,
-  1556833598.387258,
-  1556833600.3843524,
-  1556833602.3892365],
- 'current_response_time_percentile_50': [26.224613189697266,
-  26.224613189697266,
-  25.999784469604492,
-  25.999784469604492,
-  25.91729164123535],
- 'current_response_time_percentile_95': [110, 110, 100, 100, 92.8659439086914],
- 'fail_ratio': [0.0, 0.0, 0.0, 0.0, 0.0],
- 'total_rps': [25.8, 25.8, 13.8, 13.8, 10.5],
+{'time': [1557525595.4061227,
+  1557525597.4071448,
+  1557525599.406913,
+  1557525601.4073427,
+  1557525603.4075553],
+ 'current_response_time_percentile_50': [21000, 21000, 21000, 21000, 21000],
+ 'current_response_time_percentile_95': [21000, 23000, 23000, 23000, 21000],
+ 'current_response_time_average': [1386, 12200, 12200, 3388, 2111],
+ 'current_max_response_time': [23000, 23000, 23000, 23000, 21000],
+ 'current_min_response_time': [17000, 17000, 17000, 17000, 17000],
+ 'fail_ratio': [0.9035933391761612,
+  0.9038461538461539,
+  0.9038461538461539,
+  0.9049265341400173,
+  0.9050086355785838],
+ 'total_rps': [5.7, 4.4, 4.4, 4.4, 0.6],
  'user_count': [50, 50, 50, 50, 50],
- 'avg_response_time': [330.45939713807644,
-  330.45939713807644,
-  329.39648941742297,
-  329.39648941742297,
-  327.71034189793136],
- 'current_rps': [25.8, 25.8, 13.8, 13.8, 10.5],
- 'max_response_time': [3441.922426223755,
-  3441.922426223755,
-  3441.922426223755,
-  3441.922426223755,
-  3441.922426223755],
- 'median_response_time': [98.92153739929199,
-  98.92153739929199,
-  98.45185279846191,
-  98.45185279846191,
-  97.55396842956543],
- 'min_response_time': [22.5369930267334,
-  22.5369930267334,
-  22.5369930267334,
-  22.5369930267334,
-  22.5369930267334],
- 'num_failures': [0, 0, 0, 0, 0],
- 'num_requests': [6213, 6213, 6236, 6236, 6273]}
+ 'avg_response_time': [21932.348761821817,
+  21929.921705822846,
+  21929.921705822846,
+  21919.53922348385,
+  21918.748792177244],
+ 'current_rps': [5.7, 4.4, 4.4, 4.4, 0.6],
+ 'max_response_time': [56428.02929878235,
+  56428.02929878235,
+  56428.02929878235,
+  56428.02929878235,
+  56428.02929878235],
+ 'median_response_time': [21000, 21000, 21000, 21000, 21000],
+ 'min_response_time': [3427.8957843780518,
+  3427.8957843780518,
+  3427.8957843780518,
+  3427.8957843780518,
+  3427.8957843780518],
+ 'num_failures': [1031, 1034, 1034, 1047, 1048],
+ 'num_requests': [1141, 1144, 1144, 1157, 1158]}
 ```
 
 ## Running a Sequence
@@ -252,11 +264,11 @@ import matplotlib.pyplot as plt
 
 plt.figure(figsize=(8,18))
 plt.subplot(411)
-plt.plot(res['elapsed_min'], res['min_response_time'], label='min_response_time')
+plt.plot(res['elapsed_min'], res['current_min_response_time'], label='current_min_response_time')
 plt.plot(res['elapsed_min'], res['current_response_time_percentile_50'], label='median_response_time')
-plt.plot(res['elapsed_min'], res['avg_response_time'], label='avg_response_time')
+plt.plot(res['elapsed_min'], res['current_response_time_average'], label='avg_response_time')
 plt.plot(res['elapsed_min'], res['current_response_time_percentile_95'], label='95th percentile')
-plt.plot(res['elapsed_min'], res['max_response_time'], label='max_response_time')
+plt.plot(res['elapsed_min'], res['current_max_response_time'], label='current_max_response_time')
 
 plt.xlabel('Time (minutes)')
 plt.ylabel('Average Response Time (ms)')
