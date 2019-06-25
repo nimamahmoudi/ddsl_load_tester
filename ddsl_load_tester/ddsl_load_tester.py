@@ -8,8 +8,8 @@ def get_current_stats(base='http://localhost:8089/', timeout=10):
 
 def set_target_user_count(locust_count, hatch_rate=50, base='http://localhost:8089/', timeout=10):
     # set the target state
-    resp = requests.post(base+'swarm', data={'locust_count':locust_count, 'hatch_rate': hatch_rate}, timeout=timeout)
     try:
+        resp = requests.post(base+'swarm', data={'locust_count':locust_count, 'hatch_rate': hatch_rate}, timeout=timeout)
         resp_json = resp.json()
         return resp_json['success']
     except:
