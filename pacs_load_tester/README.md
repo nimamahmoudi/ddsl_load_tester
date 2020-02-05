@@ -1,6 +1,6 @@
 # Some References
 
-- [DDSL Locust](https://github.com/nimamahmoudi/ddsl_locust)
+- [pacs Locust](https://github.com/nimamahmoudi/pacs_locust)
 - [How do I Locust](https://github.com/pglass/how-do-i-locust)
 - [Locust Web API Code](https://github.com/locustio/locust/blob/master/locust/web.py)
 - [Locust Github](https://github.com/locustio/locust)
@@ -14,10 +14,10 @@ pip uninstall locust locustio
 pip freeze | grep locust
 ```
 
-Install the DDSL locust library:
+Install the pacs locust library:
 
 ```bash
-pip install ddsl-locustio
+pip install pacs-locustio
 ```
 
 # Starting the server
@@ -25,7 +25,7 @@ pip install ddsl-locustio
 This will use the `locustfile.py` or we can specify the file name using -f option.
 
 ```
-ddsl_locust --host=THE_TEST_URL -f locustfile.py
+pacs_locust --host=THE_TEST_URL -f locustfile.py
 ```
 
 # Changing the number of users

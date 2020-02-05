@@ -1,4 +1,4 @@
-# DDSL Load Tester
+# pacs Load Tester
 
 The goal of this repo is to create an scalable load tester that can get a load shape as input
 and create a user workload based on that.
@@ -25,7 +25,7 @@ pip uninstall locust locustio
 pip freeze | grep locust
 ```
 
-Install the DDSL locust library:
+Install the pacs locust library:
 ```bash
 pip install -r requirements.txt
 ```
@@ -41,13 +41,13 @@ pip install -r examples/requirements.txt
 To run the example, change your directory to the `examples/` directory and run the following 
 command.
 
-# Starting DDSL Locust Server
+# Starting pacs Locust Server
 
 As mentioned before, the locust library is responsible to make the requests to the target url.
 To start the locust server, create a `locustfile.py` and run the following command:
 
 ```bash
-ddsl_locust --host=THE_TEST_URL -f locustfile.py
+pacs_locust --host=THE_TEST_URL -f locustfile.py
 ```
 
 This will use the `locustfile.py` or we can specify the file name using -f option.
@@ -61,7 +61,7 @@ will show the stats about the requests and should look like this:
 
 In this section, we will mention how the library should be used. Keep in mind that this
 library assumes a running instance of locust (read [`starting locust server` section](#starting-locust-server)).
-Just make sure to use the command `ddsl_locust` instead of `locust`.
+Just make sure to use the command `pacs_locust` instead of `locust`.
 
 ## Adding to PYTHONPATH
 
@@ -69,7 +69,7 @@ To use this library, first you will need to add it to your PYTHONPATH. Here's ho
 
 ```python
 import sys
-sys.path.append("./ddsl_load_tester")
+sys.path.append("./pacs_load_tester")
 ```
 
 You could also use the absolute or any other relative path to the library folder.
@@ -77,7 +77,7 @@ You could also use the absolute or any other relative path to the library folder
 ## Importing
 
 ```python
-import ddsl_load_tester as load_tester
+import pacs_load_tester as load_tester
 ```
 
 ## Initialization
@@ -85,7 +85,7 @@ import ddsl_load_tester as load_tester
 The `base` variables is the adress to your running locust host.
 
 ```python
-lt = load_tester.DdslLoadTester(hatch_rate=1000, temp_stat_max_len=5, base='http://localhost:8089/')
+lt = load_tester.pacsLoadTester(hatch_rate=1000, temp_stat_max_len=5, base='http://localhost:8089/')
 lt.change_count(user_sequence[0])
 lt.start_capturing()
 ```
@@ -205,9 +205,9 @@ import time
 import pandas as pd
 
 import sys
-sys.path.append("../ddsl_load_tester")
+sys.path.append("../pacs_load_tester")
 
-import ddsl_load_tester as load_tester
+import pacs_load_tester as load_tester
 
 from tqdm.auto import tqdm
 tqdm.pandas()
@@ -215,7 +215,7 @@ tqdm.pandas()
 loop_timer = load_tester.TimerClass()
 
 user_sequence = [50,100,500,1000,1000,1000,500,100,50]
-lt = load_tester.DdslLoadTester(hatch_rate=1000, temp_stat_max_len=5, base='http://localhost:8089/')
+lt = load_tester.pacsLoadTester(hatch_rate=1000, temp_stat_max_len=5, base='http://localhost:8089/')
 lt.change_count(user_sequence[0])
 lt.start_capturing()
 

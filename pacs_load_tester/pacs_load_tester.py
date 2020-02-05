@@ -99,9 +99,9 @@ class WorkerThread(threading.Thread):
 
 from datetime import datetime
 
-class DdslLoadTester:
+class pacsLoadTester:
     def __init__(self, base='http://localhost:8089/',hatch_rate=50,temp_stat_max_len=5):
-        super(DdslLoadTester, self).__init__()
+        super(pacsLoadTester, self).__init__()
         self.base = base
         self.hatch_rate = hatch_rate
         self.worker_thread = None
